@@ -16,16 +16,12 @@ String output = Formatter.format('Hello, {name}! Welcome to {city}!', new Map<St
 Format with different types:
 
 ```apex
-Formatter.format('{boolean} {string} {integer} {long} {decimal} {double} {date} {datetime}', new Map<String, Object> {
+String output = Formatter.format('{boolean} {string} {integer} {date}', new Map<String, Object> {
     'boolean' => true,
     'string' => 'abc',
-    'integer' => (Integer) 123,
-    'long' => (Long) 456,
-    'decimal' => (Decimal) 123.456,
-    'double' => (Double) 123.456789,
+    'integer' => 123,
     'date' => Date.today(),
-    'datetime' => Datetime.now()
-}));
+});
 ```
 
 ## Author
