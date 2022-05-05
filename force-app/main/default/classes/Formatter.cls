@@ -60,7 +60,13 @@ public class Formatter {
         }        
     }
     
-    private interface Token {}
+    private interface Arguments {
+        Object getArgument (String argument);
+    }
+
+    private interface Token {
+        Object getValue (Arguments arguments);
+    }
     
     private class LiteralToken implements Token {
         private String value;
@@ -69,7 +75,7 @@ public class Formatter {
             this.value = value;
         }
         
-        private String getValue () {
+        public String getValue (Arguments arguments) {
             return value;
         }
     }
@@ -81,8 +87,8 @@ public class Formatter {
             this.name = name;
         }
         
-        private String getName () {
-            return name;
+        public Object getValue (Arguments arguments) {
+            return arguments.getArgument(name);
         }
     }
     
@@ -188,7 +194,7 @@ public class Formatter {
         }
     }
     
-    private class Compiler {
+    private class Compiler implements Arguments {
         private Tokens tokens;
         private Map<String, Object> arguments;
         
@@ -197,7 +203,7 @@ public class Formatter {
             this.arguments = arguments;
         }
         
-        private Object getArgumentByName (String name) {
+        public Object getArgument (String name) {
             Object value = arguments.get(name);
             
             if (value == null) {
@@ -207,29 +213,11 @@ public class Formatter {
             return value;
         }
         
-        private Object getValue (Token token) {
-            if (token instanceof LiteralToken) {
-                LiteralToken literal = (LiteralToken) token;
-                
-                return literal.getValue();
-            } 
-            
-            if (token instanceof VariableToken) {
-                VariableToken variable = (VariableToken) token;
-                
-                return getArgumentByName(
-                    variable.getName()
-                );
-            }
-            
-            return null;
-        }
-        
         private String run () {
             StringBuilder builder = new StringBuilder();
         
             for (Token token : tokens.all()) {
-                builder.add(getValue(token));
+                builder.add(token.getValue(this));
             }
             
             return builder.build();
