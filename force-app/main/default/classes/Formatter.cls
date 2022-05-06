@@ -54,7 +54,7 @@ public class Formatter {
         private void add (Token token) {
             tokens.add(token);
         }
-	
+
         private List<Token> all () {
             return tokens;
         }        
@@ -154,7 +154,7 @@ public class Formatter {
                 advance();
                 
                 return new VariableToken(
-                	span(startOffset, endOffset)
+                    span(startOffset, endOffset)
                 );
             } else {
                 Integer startOffset = offset;
